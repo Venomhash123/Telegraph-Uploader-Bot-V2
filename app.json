@@ -1,0 +1,47 @@
+{
+    "name" : "Telegraph-Uploader-Bot-V2",
+    "description" : "An advanced simple small media or file to telegra.ph link uploader bot.",
+    "keywords" : [
+        "telegram",
+        "bot",
+        "heroku",
+        "python",
+        "pyrogram",
+        "app.json",
+        "app",
+        "file",
+        "uploader",
+        "telegraph"
+    ],
+    "repository" : "https://github.com/FayasNoushad/Telegraph-Uploader-Bot-V2",
+    "env" : {
+        "BOT_TOKEN" : {
+            "description" : "Your bot token from https://t.me/BotFather"
+        },
+        "API_ID" : {
+            "description" : "Your API ID from my.telegram.org"
+        },
+        "API_HASH" : {
+            "description" : "Your API Hash from my.telegram.org"
+        },
+        "BOT_OWNER" : {
+            "description" : "Bot owner ID"
+        },
+        "DATABASE_URL" : {
+            "description" : "MongoDB URL"
+        }
+
+    },
+    "stack" : "heroku-20",
+    "buildpacks" : [
+        {
+            "url" : "heroku/python"
+        }
+    ],
+    "formation" : {
+        "worker" : {
+            "quantity" : 1,
+            "size" : "free"
+        }
+    }
+}
