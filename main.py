@@ -14,7 +14,7 @@ import traceback
 import asyncio
 import datetime
 import aiofiles
-from random import choice 
+from random import choice
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from pyrogram.errors import FloodWait, InputUserDeactivated, UserIsBlocked, PeerIdInvalid, UserNotParticipant, UserBannedInChannel
@@ -26,13 +26,14 @@ from database import Database
 UPDATE_CHANNEL = os.environ.get("UPDATE_CHANNEL", "")
 BOT_OWNER = int(os.environ["BOT_OWNER"])
 DATABASE_URL = os.environ["DATABASE_URL"]
-db = Database(DATABASE_URL, "FnTelegraphBot")
+db = Database(DATABASE_URL, "")
+url = DATABASE_URL
 
 Bot = Client(
     "Telegraph Uploader Bot",
-    bot_token = os.environ["BOT_TOKEN"],
-    api_id = int(os.environ["API_ID"]),
-    api_hash = os.environ["API_HASH"],
+    bot_token=os.environ["BOT_TOKEN"],
+    api_id=int(os.environ["API_ID"]),
+    api_hash=os.environ["API_HASH"],
 )
 
 START_TEXT = """**Hello {} 😌
@@ -79,44 +80,44 @@ FORCE_SUBSCRIBE_TEXT = "<code>Sorry Dear You Must Join My Updates Channel for us
 
 START_BUTTONS = InlineKeyboardMarkup(
         [[
-        InlineKeyboardButton('⚙ Help', callback_data='help'),
-        InlineKeyboardButton('About 🔰', callback_data='about'),
-        InlineKeyboardButton('Close ✖️', callback_data='close')
+          InlineKeyboardButton('⚙ Help', callback_data='help'),
+          InlineKeyboardButton('About 🔰', callback_data='about'),
+          InlineKeyboardButton('Close ✖️', callback_data='close')
         ]]
     )
 
 HELP_BUTTONS = InlineKeyboardMarkup(
         [[
-        InlineKeyboardButton('🏘 Home', callback_data='home'),
-        InlineKeyboardButton('About 🔰', callback_data='about'),
-        InlineKeyboardButton('Close ✖️', callback_data='close')
+          InlineKeyboardButton('🏘 Home', callback_data='home'),
+          InlineKeyboardButton('About 🔰', callback_data='about'),
+          InlineKeyboardButton('Close ✖️', callback_data='close')
         ]]
     )
 
 ABOUT_BUTTONS = InlineKeyboardMarkup(
         [[
-        InlineKeyboardButton('🏘 Home', callback_data='home'),
-        InlineKeyboardButton('Help ⚙', callback_data='help'),
-        InlineKeyboardButton('Close ✖️', callback_data='close')
+          InlineKeyboardButton('🏘 Home', callback_data='home'),
+          InlineKeyboardButton('Help ⚙', callback_data='help'),
+          InlineKeyboardButton('Close ✖️', callback_data='close')
         ]]
     )
 
 
 async def send_msg(user_id, message):
-	try:
-		await message.copy(chat_id=user_id)
-		return 200, None
-	except FloodWait as e:
-		await asyncio.sleep(e.x)
-		return send_msg(user_id, message)
-	except InputUserDeactivated:
-		return 400, f"{user_id} : deactivated\n"
-	except UserIsBlocked:
-		return 400, f"{user_id} : user is blocked\n"
-	except PeerIdInvalid:
-		return 400, f"{user_id} : user id invalid\n"
-	except Exception as e:
-		return 500, f"{user_id} : {traceback.format_exc()}\n"
+    try:
+        await message.copy(chat_id=user_id)
+        return 200, None
+    except FloodWait as e:
+        await asyncio.sleep(e.x)
+        return send_msg(user_id, message)
+    except InputUserDeactivated:
+        return 400, f"{user_id} : deactivated\n"
+    except UserIsBlocked:
+        return 400, f"{user_id} : user is blocked\n"
+    except PeerIdInvalid:
+        return 400, f"{user_id} : user id invalid\n"
+    except Exception as e:
+        return 500, f"{user_id} : {traceback.format_exc()}\n"
 
 
 @Bot.on_callback_query()
@@ -146,11 +147,11 @@ async def cb_handler(bot, update):
 @Bot.on_message(filters.private & filters.command(["start"]))
 async def start(bot, update):
     if not await db.is_user_exist(update.from_user.id):
-	    await db.add_user(update.from_user.id)
+        await db.add_user(update.from_user.id)
     await update.reply_text(
         text=START_TEXT.format(update.from_user.mention),
         disable_web_page_preview=True,
-	reply_markup=START_BUTTONS
+        reply_markup=START_BUTTONS
     )
 
 
